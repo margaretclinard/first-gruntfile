@@ -39,6 +39,10 @@ module.exports = function (grunt) {
       }
     },
     watch: {
+      bower: {
+        files: ['bower.json'],
+        tasks:['wiredep']
+      },
       other: {
         files: ['app/**', '!**/*.jade', '!**/*.{sass,scss}'],
         tasks:['copy']
@@ -51,10 +55,16 @@ module.exports = function (grunt) {
         files: ['app/**/*. {sass,scss}'],
         tasks:['sass', 'autoprefixer']
       }
+    },
+
+    wiredep: {
+      build:{
+        src: ['public/**/*.html']
+      }
     }
   });
 
   grunt.registerTask('default', []);
-  grunt.registerTask('build', ['clean', 'copy', 'jade', 'sass']);
+  grunt.registerTask('build', ['clean', 'copy', 'jade', 'sass', 'autoprefixer', 'wiredep']);
   grunt.registerTask('serve', ['build', 'watch']);
 };
