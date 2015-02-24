@@ -8,20 +8,30 @@ module.exports = function (grunt) {
       options: {
         browsers: ['> 1% in US']
       },
+
       build: {
         src: 'public/css/main.css'
       }
     },
-
     clean: {
       temp: ['.tmp'],
       dist: ['public']
     },
-
     copy: {
       main: {
         files: [
-          {expand: true, cwd: 'app/', src: ['**', '!**/*.jade', '!**/*.{sass,scss}', '!**/*.js'], dest: 'public/', filter: 'isFile'}
+          {
+            expand: true,
+            cwd: 'app/',
+            src: [
+              '**',
+              '!**/*.jade',
+              '!**/*.{sass,scss}',
+              '!**/*.js'
+            ],
+            dest: 'public/',
+            filter: 'isFile'
+          }
         ]
       }
     },
@@ -48,6 +58,8 @@ module.exports = function (grunt) {
 
       server: {
         options: {
+          livereload: true,
+
           middleware: function (connect) {
             return [
               connect.static('public'),
@@ -67,7 +79,6 @@ module.exports = function (grunt) {
         files: [{expand: true, cwd: 'app/', src: ['**/*.jade', '!**/_*.jade'], dest: 'public/', ext: '.html'}]
       }
     },
-
     sass: {
       options: {
         sourceMap: true
@@ -95,35 +106,55 @@ module.exports = function (grunt) {
     watch: {
       bower: {
         files: ['bower.json'],
-        tasks:['wiredep']
+        tasks: ['wiredep']
       },
+
+      livereload: {
+        options: {
+          livereload: true
+        },
+
+        files: [
+          'public/**/*.html',
+          'public/css/**/*.css',
+          'public/js/**/*.js',
+          'app/scripts/**/*.js'
+        ]
+      },
+
       other: {
-        files: ['app/**', '!**/*.jade', '!**/*.{sass,scss}'],
-        tasks:['copy']
+        files: ['app/**', '!app/**/*.jade', '!app/**/*.{sass,scss}'],
+        tasks: ['copy']
       },
       jade: {
         files: ['app/**/*.jade'],
         tasks: ['jade']
       },
       sass: {
-        files: ['app/**/*. {sass,scss}'],
-        tasks:['sass', 'autoprefixer']
+        files: ['app/**/*.{sass,scss}'],
+        tasks: ['sass', 'autoprefixer']
       }
     },
 
     wiredep: {
-      build:{
+      build: {
         src: ['public/**/*.html']
       }
     }
   });
 
   grunt.registerTask('default', []);
-  grunt.registerTask('build', ['clean', 'copy', 'jade', 'sass', 'autoprefixer', 'wiredep', 'combineJs']);
-  grunt.registerTask('serve', ['build', 'connect', 'watch']);
+  grunt.registerTask('build', ['setup', 'combineJs']);
+  grunt.registerTask('serve', ['setup', 'connect', 'watch']);
+  grunt.registerTask('setup', [
+    'clean',
+    'copy',
+    'jade',
+    'sass',
+    'autoprefixer',
+    'wiredep'
+  ]);
   grunt.registerTask('combineJs', [
-    'clean:temp',
-    'wiredep',
     'useminPrepare',
     'concat:generated',
     'uglify:generated',
