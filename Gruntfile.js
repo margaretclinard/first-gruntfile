@@ -26,6 +26,18 @@ module.exports = function (grunt) {
       }
     },
 
+    concat: {
+      iife: {
+        options: {
+          banner: ';(function(){',
+          footer: '}());'
+        },
+
+        src: ['public/js/main.min.js'],
+        dest: 'public/js/main.min.js'
+      }
+    },
+
     connect: {
       options: {
         port: 8888,
@@ -116,6 +128,7 @@ module.exports = function (grunt) {
     'concat:generated',
     'uglify:generated',
     'usemin',
+    'concat:iife',
     'clean:temp'
   ]);
 };
