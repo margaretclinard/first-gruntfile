@@ -21,6 +21,7 @@
     "grunt-contrib-copy": "^0.8.0"
   },
   "devDependencies": {
+    "grunt-autoprefixer": "^2.2.0",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-jade": "^0.14.1",
     "grunt-contrib-watch": "^0.6.1",

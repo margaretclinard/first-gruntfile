@@ -4,6 +4,14 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
+    autoprefixer: {
+      options: {
+        browsers: ['> 1% in US']
+      },
+      build: {
+        src: 'public/css/main.css'
+      }
+    },
     clean: ['public'],
     copy: {
       main: {
@@ -14,6 +22,9 @@ module.exports = function (grunt) {
     },
     jade: {
       compile: {
+        options: {
+          pretty: true
+        },
         files: [{expand: true, cwd: 'app/', src: ['**/*.jade', '!**/_*.jade'], dest: 'public/', ext: '.html'}]
       }
     },
@@ -38,7 +49,7 @@ module.exports = function (grunt) {
       },
       sass: {
         files: ['app/**/*. {sass,scss}'],
-        tasks:['sass']
+        tasks:['sass', 'autoprefixer']
       }
     }
   });
